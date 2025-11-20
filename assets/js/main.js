@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateCounterAndTitlePosition = () => {
         const titleHeight = document.querySelector(".slider-title-wrapper p").offsetHeight;
-        const couterY = -20 * (currentImg - 1);
+        const counterY = -20 * (currentImg - 1);
         const titleY = -titleHeight * (currentImg - 1);
 
         gsap.to(counter, {
-            y: couterY,
+            y: counterY,
             duration: 1,
             ease: "hop",
         });
@@ -51,14 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
         slideImgEl.src = `./assets/images/img${currentImg}.jpg`;
         slideImg.appendChild(slideImgEl);
 
-        // Incoming image start position
         gsap.set(slideImgEl, {
             x: direction === "left" ? -300 : 300,
         });
 
         sliderImages.appendChild(slideImg);
 
-        // Outgoing image
         if (currentSlide) {
             gsap.to(currentSlide.querySelector("img"), {
                 x: direction === "left" ? 300 : -300,
@@ -72,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Clip path animation for new slide
         gsap.fromTo(
             slideImg,
             {
@@ -88,15 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
-        // Move incoming image to center
         gsap.to(slideImgEl, {
             x: 0,
             duration: 1.5,
             ease: "power4.out",
         });
 
-        // Rotate indicators
         indicatorRotation += direction === "left" ? -90 : 90;
+
         indicators.forEach((indicator) => {
             gsap.to(indicator, {
                 rotation: indicatorRotation,
@@ -130,7 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (clickedIndex !== currentImg) {
                     const direction = clickedIndex > currentImg ? "right" : "left";
+
                     currentImg = clickedIndex;
+
                     animateSlide(direction);
                     updateActiveSlidePreview();
                     updateCounterAndTitlePosition();
@@ -142,11 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (clickPosition < sliderWidth / 2 && currentImg > 1) {
             currentImg--;
+
             animateSlide("left");
             updateActiveSlidePreview();
             updateCounterAndTitlePosition();
         } else if (clickPosition > sliderWidth / 2 && currentImg < totalSlides) {
             currentImg++;
+
             animateSlide("right");
             updateActiveSlidePreview();
             updateCounterAndTitlePosition();
